@@ -1,0 +1,1299 @@
+{
+  "$defs": {
+    "ClimateScenario": {
+      "additionalProperties": false,
+      "properties": {
+        "baseline_year": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Weather year to replay",
+          "title": "Baseline Year"
+        },
+        "delta_t_c": {
+          "description": "Added to tmin and tmax",
+          "maximum": 8,
+          "minimum": -5,
+          "title": "Delta T C",
+          "type": "number"
+        },
+        "id": {
+          "maxLength": 48,
+          "minLength": 1,
+          "pattern": "^[a-z0-9_-]+$",
+          "title": "Id",
+          "type": "string"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "precip_scale": {
+          "description": "Multiplier on daily precipitation",
+          "exclusiveMinimum": 0,
+          "maximum": 3,
+          "title": "Precip Scale",
+          "type": "number"
+        },
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        },
+        "seed": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Seed",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "provenance",
+        "id",
+        "label",
+        "delta_t_c",
+        "precip_scale",
+        "baseline_year",
+        "seed"
+      ],
+      "title": "ClimateScenario",
+      "type": "object"
+    },
+    "ClimateSeries": {
+      "additionalProperties": false,
+      "description": "Daily weather. ``et0_mm=None`` means the engine must compute ET0 from temperature.\n\nScenario application (see scenario.apply_scenario) always clears et0_mm, because a\nstored ET0 would be stale after a temperature change.",
+      "properties": {
+        "et0_mm": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Et0 Mm"
+        },
+        "precip_mm": {
+          "items": {
+            "type": "number"
+          },
+          "title": "Precip Mm",
+          "type": "array"
+        },
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        },
+        "start_date": {
+          "format": "date",
+          "title": "Start Date",
+          "type": "string"
+        },
+        "tmax_c": {
+          "items": {
+            "type": "number"
+          },
+          "title": "Tmax C",
+          "type": "array"
+        },
+        "tmin_c": {
+          "items": {
+            "type": "number"
+          },
+          "title": "Tmin C",
+          "type": "array"
+        }
+      },
+      "required": [
+        "provenance",
+        "start_date",
+        "tmin_c",
+        "tmax_c",
+        "precip_mm",
+        "et0_mm"
+      ],
+      "title": "ClimateSeries",
+      "type": "object"
+    },
+    "CropCatalog": {
+      "additionalProperties": false,
+      "properties": {
+        "crops": {
+          "items": {
+            "$ref": "#/$defs/CropSpec"
+          },
+          "minItems": 1,
+          "title": "Crops",
+          "type": "array"
+        },
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        }
+      },
+      "required": [
+        "provenance",
+        "crops"
+      ],
+      "title": "CropCatalog",
+      "type": "object"
+    },
+    "CropSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "depletion_p": {
+          "description": "Fraction of TAW depletable w/o stress",
+          "exclusiveMaximum": 1,
+          "exclusiveMinimum": 0,
+          "title": "Depletion P",
+          "type": "number"
+        },
+        "id": {
+          "maxLength": 48,
+          "minLength": 1,
+          "pattern": "^[a-z0-9_-]+$",
+          "title": "Id",
+          "type": "string"
+        },
+        "kc_end": {
+          "exclusiveMinimum": 0,
+          "title": "Kc End",
+          "type": "number"
+        },
+        "kc_ini": {
+          "exclusiveMinimum": 0,
+          "title": "Kc Ini",
+          "type": "number"
+        },
+        "kc_mid": {
+          "exclusiveMinimum": 0,
+          "title": "Kc Mid",
+          "type": "number"
+        },
+        "ky": {
+          "description": "Yield response factor (FAO-33 style)",
+          "exclusiveMinimum": 0,
+          "title": "Ky",
+          "type": "number"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "root_depth_max_m": {
+          "exclusiveMinimum": 0,
+          "title": "Root Depth Max M",
+          "type": "number"
+        },
+        "season_type": {
+          "enum": [
+            "winter",
+            "spring",
+            "summer"
+          ],
+          "title": "Season Type",
+          "type": "string"
+        },
+        "stage_days": {
+          "description": "initial, development, mid, late",
+          "maxItems": 4,
+          "minItems": 4,
+          "prefixItems": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "integer"
+            }
+          ],
+          "title": "Stage Days",
+          "type": "array"
+        },
+        "tbase_c": {
+          "title": "Tbase C",
+          "type": "number"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "season_type",
+        "kc_ini",
+        "kc_mid",
+        "kc_end",
+        "stage_days",
+        "root_depth_max_m",
+        "depletion_p",
+        "ky",
+        "tbase_c"
+      ],
+      "title": "CropSpec",
+      "type": "object"
+    },
+    "DataKind": {
+      "enum": [
+        "observed",
+        "reanalysis",
+        "forecast",
+        "model_estimate",
+        "game_assumption",
+        "simulated",
+        "mock"
+      ],
+      "title": "DataKind",
+      "type": "string"
+    },
+    "EngineInfo": {
+      "additionalProperties": false,
+      "properties": {
+        "is_mock": {
+          "title": "Is Mock",
+          "type": "boolean"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "version",
+        "is_mock"
+      ],
+      "title": "EngineInfo",
+      "type": "object"
+    },
+    "IrrigationPolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "depth_mm": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Depth Mm"
+        },
+        "interval_days": {
+          "anyOf": [
+            {
+              "maximum": 60,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Interval Days"
+        },
+        "season_cap_mm": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Season Cap Mm"
+        },
+        "strategy": {
+          "enum": [
+            "rainfed",
+            "fixed_depth",
+            "deficit_threshold"
+          ],
+          "title": "Strategy",
+          "type": "string"
+        },
+        "trigger_depletion_frac": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "maximum": 1,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Trigger Depletion Frac"
+        }
+      },
+      "required": [
+        "strategy",
+        "depth_mm",
+        "interval_days",
+        "trigger_depletion_frac",
+        "season_cap_mm"
+      ],
+      "title": "IrrigationPolicy",
+      "type": "object"
+    },
+    "ManagementPlan": {
+      "additionalProperties": false,
+      "description": "Provenance of a plan is GAME_ASSUMPTION (player decision), never observation.",
+      "properties": {
+        "id": {
+          "maxLength": 48,
+          "minLength": 1,
+          "pattern": "^[a-z0-9_-]+$",
+          "title": "Id",
+          "type": "string"
+        },
+        "label": {
+          "description": "e.g. 'A' or 'B'",
+          "maxLength": 24,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        },
+        "region_id": {
+          "maxLength": 48,
+          "minLength": 1,
+          "pattern": "^[a-z0-9_-]+$",
+          "title": "Region Id",
+          "type": "string"
+        },
+        "seasons": {
+          "items": {
+            "$ref": "#/$defs/SeasonPlan"
+          },
+          "minItems": 1,
+          "title": "Seasons",
+          "type": "array"
+        }
+      },
+      "required": [
+        "provenance",
+        "id",
+        "region_id",
+        "label",
+        "seasons"
+      ],
+      "title": "ManagementPlan",
+      "type": "object"
+    },
+    "ObservationLayerSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "layer": {
+          "enum": [
+            "ndvi",
+            "sar_backscatter",
+            "sar_soil_moisture",
+            "land_cover"
+          ],
+          "title": "Layer",
+          "type": "string"
+        },
+        "note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Note"
+        },
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        },
+        "status": {
+          "enum": [
+            "planned",
+            "unverified",
+            "verified_available"
+          ],
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "provenance",
+        "layer",
+        "status",
+        "note"
+      ],
+      "title": "ObservationLayerSpec",
+      "type": "object"
+    },
+    "Parcel": {
+      "additionalProperties": false,
+      "properties": {
+        "area_ha": {
+          "exclusiveMinimum": 0,
+          "title": "Area Ha",
+          "type": "number"
+        },
+        "id": {
+          "maxLength": 48,
+          "minLength": 1,
+          "pattern": "^[a-z0-9_-]+$",
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "ring": {
+          "description": "Closed ring, lon/lat",
+          "items": {
+            "maxItems": 2,
+            "minItems": 2,
+            "prefixItems": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "type": "array"
+          },
+          "minItems": 4,
+          "title": "Ring",
+          "type": "array"
+        },
+        "soil_id": {
+          "title": "Soil Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "ring",
+        "area_ha",
+        "soil_id"
+      ],
+      "title": "Parcel",
+      "type": "object"
+    },
+    "ParcelDayState": {
+      "additionalProperties": false,
+      "description": "Per-parcel daily state. All water quantities are MODEL outputs (root-zone bucket).",
+      "properties": {
+        "biomass_t_ha": {
+          "minimum": 0,
+          "title": "Biomass T Ha",
+          "type": "number"
+        },
+        "canopy_cover": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Canopy Cover",
+          "type": "number"
+        },
+        "crop_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Crop Id"
+        },
+        "depletion_mm": {
+          "minimum": 0,
+          "title": "Depletion Mm",
+          "type": "number"
+        },
+        "et_actual_mm": {
+          "minimum": 0,
+          "title": "Et Actual Mm",
+          "type": "number"
+        },
+        "irrigation_mm": {
+          "minimum": 0,
+          "title": "Irrigation Mm",
+          "type": "number"
+        },
+        "parcel_id": {
+          "title": "Parcel Id",
+          "type": "string"
+        },
+        "rain_mm": {
+          "minimum": 0,
+          "title": "Rain Mm",
+          "type": "number"
+        },
+        "root_zone_water_mm": {
+          "minimum": 0,
+          "title": "Root Zone Water Mm",
+          "type": "number"
+        },
+        "stage": {
+          "enum": [
+            "fallow",
+            "emergence",
+            "vegetative",
+            "reproductive",
+            "senescence",
+            "harvested",
+            "failed"
+          ],
+          "title": "Stage",
+          "type": "string"
+        },
+        "taw_mm": {
+          "description": "Total available water in the root zone",
+          "minimum": 0,
+          "title": "Taw Mm",
+          "type": "number"
+        },
+        "water_stress_ks": {
+          "description": "1 = no stress",
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Water Stress Ks",
+          "type": "number"
+        }
+      },
+      "required": [
+        "parcel_id",
+        "crop_id",
+        "stage",
+        "root_zone_water_mm",
+        "taw_mm",
+        "depletion_mm",
+        "water_stress_ks",
+        "canopy_cover",
+        "biomass_t_ha",
+        "rain_mm",
+        "irrigation_mm",
+        "et_actual_mm"
+      ],
+      "title": "ParcelDayState",
+      "type": "object"
+    },
+    "ParcelSeasonPlan": {
+      "additionalProperties": false,
+      "properties": {
+        "crop_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "None = fallow",
+          "title": "Crop Id"
+        },
+        "irrigation": {
+          "$ref": "#/$defs/IrrigationPolicy"
+        },
+        "nitrogen_kg_ha": {
+          "default": 0,
+          "maximum": 400,
+          "minimum": 0,
+          "title": "Nitrogen Kg Ha",
+          "type": "number"
+        },
+        "parcel_id": {
+          "title": "Parcel Id",
+          "type": "string"
+        },
+        "sowing_doy": {
+          "anyOf": [
+            {
+              "maximum": 366,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sowing Doy"
+        }
+      },
+      "required": [
+        "parcel_id",
+        "crop_id",
+        "sowing_doy",
+        "irrigation",
+        "nitrogen_kg_ha"
+      ],
+      "title": "ParcelSeasonPlan",
+      "type": "object"
+    },
+    "ParcelSet": {
+      "additionalProperties": false,
+      "properties": {
+        "parcels": {
+          "items": {
+            "$ref": "#/$defs/Parcel"
+          },
+          "minItems": 1,
+          "title": "Parcels",
+          "type": "array"
+        },
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        }
+      },
+      "required": [
+        "provenance",
+        "parcels"
+      ],
+      "title": "ParcelSet",
+      "type": "object"
+    },
+    "Provenance": {
+      "additionalProperties": false,
+      "properties": {
+        "dataset_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Dataset Id"
+        },
+        "derived_from": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Derived From",
+          "type": "array"
+        },
+        "generator": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Code path or person that produced generated values",
+          "title": "Generator"
+        },
+        "kind": {
+          "$ref": "#/$defs/DataKind"
+        },
+        "license": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "License"
+        },
+        "notes": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Notes"
+        },
+        "resolution_m": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Resolution M"
+        },
+        "retrieved_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Retrieved At"
+        },
+        "source": {
+          "description": "Human-readable origin, e.g. 'NASA POWER'",
+          "minLength": 3,
+          "title": "Source",
+          "type": "string"
+        },
+        "temporal_resolution": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Temporal Resolution"
+        },
+        "version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Version"
+        }
+      },
+      "required": [
+        "kind",
+        "source",
+        "dataset_id",
+        "version",
+        "retrieved_at",
+        "resolution_m",
+        "temporal_resolution",
+        "license",
+        "generator",
+        "derived_from",
+        "notes"
+      ],
+      "title": "Provenance",
+      "type": "object"
+    },
+    "RegionPack": {
+      "additionalProperties": false,
+      "properties": {
+        "climate": {
+          "$ref": "#/$defs/ClimateSeries"
+        },
+        "crops": {
+          "$ref": "#/$defs/CropCatalog"
+        },
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "id": {
+          "maxLength": 48,
+          "minLength": 1,
+          "pattern": "^[a-z0-9_-]+$",
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "observation_layers": {
+          "items": {
+            "$ref": "#/$defs/ObservationLayerSpec"
+          },
+          "title": "Observation Layers",
+          "type": "array"
+        },
+        "parcels": {
+          "$ref": "#/$defs/ParcelSet"
+        },
+        "rules": {
+          "$ref": "#/$defs/ResourceRules"
+        },
+        "schema_version": {
+          "const": "0.1.0",
+          "default": "0.1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "site": {
+          "$ref": "#/$defs/SiteGeometry"
+        },
+        "soils": {
+          "$ref": "#/$defs/SoilSet"
+        }
+      },
+      "required": [
+        "schema_version",
+        "id",
+        "name",
+        "description",
+        "site",
+        "parcels",
+        "soils",
+        "climate",
+        "crops",
+        "rules",
+        "observation_layers"
+      ],
+      "title": "RegionPack",
+      "type": "object"
+    },
+    "ResourceRules": {
+      "additionalProperties": false,
+      "properties": {
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        },
+        "pumping_cost_per_mm": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Pumping Cost Per Mm"
+        },
+        "seasonal_water_quota_mm": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Seasonal Water Quota Mm"
+        },
+        "starting_budget": {
+          "description": "Game currency units",
+          "exclusiveMinimum": 0,
+          "title": "Starting Budget",
+          "type": "number"
+        },
+        "water_source": {
+          "enum": [
+            "surface_quota",
+            "groundwater_pumping"
+          ],
+          "title": "Water Source",
+          "type": "string"
+        }
+      },
+      "required": [
+        "provenance",
+        "water_source",
+        "seasonal_water_quota_mm",
+        "pumping_cost_per_mm",
+        "starting_budget"
+      ],
+      "title": "ResourceRules",
+      "type": "object"
+    },
+    "SeasonPlan": {
+      "additionalProperties": false,
+      "properties": {
+        "parcels": {
+          "items": {
+            "$ref": "#/$defs/ParcelSeasonPlan"
+          },
+          "minItems": 1,
+          "title": "Parcels",
+          "type": "array"
+        },
+        "season": {
+          "minimum": 1,
+          "title": "Season",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "season",
+        "parcels"
+      ],
+      "title": "SeasonPlan",
+      "type": "object"
+    },
+    "SeasonSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "crop_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Crop Id"
+        },
+        "et_total_mm": {
+          "minimum": 0,
+          "title": "Et Total Mm",
+          "type": "number"
+        },
+        "irrigation_total_mm": {
+          "minimum": 0,
+          "title": "Irrigation Total Mm",
+          "type": "number"
+        },
+        "parcel_id": {
+          "title": "Parcel Id",
+          "type": "string"
+        },
+        "relative_yield_index": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Model-relative yield (0-1). NOT a measured or forecast yield in t/ha.",
+          "title": "Relative Yield Index"
+        },
+        "season": {
+          "minimum": 1,
+          "title": "Season",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "season",
+        "parcel_id",
+        "crop_id",
+        "irrigation_total_mm",
+        "et_total_mm",
+        "relative_yield_index"
+      ],
+      "title": "SeasonSummary",
+      "type": "object"
+    },
+    "SimDay": {
+      "additionalProperties": false,
+      "properties": {
+        "date": {
+          "format": "date",
+          "title": "Date",
+          "type": "string"
+        },
+        "day": {
+          "minimum": 0,
+          "title": "Day",
+          "type": "integer"
+        },
+        "parcels": {
+          "items": {
+            "$ref": "#/$defs/ParcelDayState"
+          },
+          "title": "Parcels",
+          "type": "array"
+        }
+      },
+      "required": [
+        "day",
+        "date",
+        "parcels"
+      ],
+      "title": "SimDay",
+      "type": "object"
+    },
+    "SimRequest": {
+      "additionalProperties": false,
+      "description": "API envelope: no numeric data of its own.",
+      "properties": {
+        "plan": {
+          "$ref": "#/$defs/ManagementPlan"
+        },
+        "scenario": {
+          "$ref": "#/$defs/ClimateScenario"
+        }
+      },
+      "required": [
+        "plan",
+        "scenario"
+      ],
+      "title": "SimRequest",
+      "type": "object"
+    },
+    "SimState": {
+      "additionalProperties": false,
+      "properties": {
+        "days": {
+          "items": {
+            "$ref": "#/$defs/SimDay"
+          },
+          "title": "Days",
+          "type": "array"
+        },
+        "engine": {
+          "$ref": "#/$defs/EngineInfo"
+        },
+        "plan_id": {
+          "maxLength": 48,
+          "minLength": 1,
+          "pattern": "^[a-z0-9_-]+$",
+          "title": "Plan Id",
+          "type": "string"
+        },
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        },
+        "region_id": {
+          "maxLength": 48,
+          "minLength": 1,
+          "pattern": "^[a-z0-9_-]+$",
+          "title": "Region Id",
+          "type": "string"
+        },
+        "run_id": {
+          "maxLength": 48,
+          "minLength": 1,
+          "pattern": "^[a-z0-9_-]+$",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "scenario_id": {
+          "maxLength": 48,
+          "minLength": 1,
+          "pattern": "^[a-z0-9_-]+$",
+          "title": "Scenario Id",
+          "type": "string"
+        },
+        "summaries": {
+          "items": {
+            "$ref": "#/$defs/SeasonSummary"
+          },
+          "title": "Summaries",
+          "type": "array"
+        }
+      },
+      "required": [
+        "provenance",
+        "run_id",
+        "region_id",
+        "plan_id",
+        "scenario_id",
+        "engine",
+        "days",
+        "summaries"
+      ],
+      "title": "SimState",
+      "type": "object"
+    },
+    "SiteGeometry": {
+      "additionalProperties": false,
+      "properties": {
+        "bbox": {
+          "description": "west, south, east, north",
+          "maxItems": 4,
+          "minItems": 4,
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Bbox",
+          "type": "array"
+        },
+        "center": {
+          "maxItems": 2,
+          "minItems": 2,
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Center",
+          "type": "array"
+        },
+        "local_epsg": {
+          "description": "Projected CRS used to align the game grid (e.g. UTM)",
+          "title": "Local Epsg",
+          "type": "integer"
+        },
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        }
+      },
+      "required": [
+        "provenance",
+        "bbox",
+        "center",
+        "local_epsg"
+      ],
+      "title": "SiteGeometry",
+      "type": "object"
+    },
+    "SoilLayer": {
+      "additionalProperties": false,
+      "properties": {
+        "bottom_cm": {
+          "exclusiveMinimum": 0,
+          "title": "Bottom Cm",
+          "type": "number"
+        },
+        "ksat_mm_day": {
+          "exclusiveMinimum": 0,
+          "title": "Ksat Mm Day",
+          "type": "number"
+        },
+        "theta_fc": {
+          "description": "Field capacity, m3/m3",
+          "exclusiveMaximum": 1,
+          "exclusiveMinimum": 0,
+          "title": "Theta Fc",
+          "type": "number"
+        },
+        "theta_sat": {
+          "description": "Saturation, m3/m3",
+          "exclusiveMaximum": 1,
+          "exclusiveMinimum": 0,
+          "title": "Theta Sat",
+          "type": "number"
+        },
+        "theta_wp": {
+          "description": "Wilting point, m3/m3",
+          "exclusiveMaximum": 1,
+          "exclusiveMinimum": 0,
+          "title": "Theta Wp",
+          "type": "number"
+        },
+        "top_cm": {
+          "minimum": 0,
+          "title": "Top Cm",
+          "type": "number"
+        }
+      },
+      "required": [
+        "top_cm",
+        "bottom_cm",
+        "theta_wp",
+        "theta_fc",
+        "theta_sat",
+        "ksat_mm_day"
+      ],
+      "title": "SoilLayer",
+      "type": "object"
+    },
+    "SoilProfile": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "maxLength": 48,
+          "minLength": 1,
+          "pattern": "^[a-z0-9_-]+$",
+          "title": "Id",
+          "type": "string"
+        },
+        "layers": {
+          "items": {
+            "$ref": "#/$defs/SoilLayer"
+          },
+          "minItems": 1,
+          "title": "Layers",
+          "type": "array"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "layers"
+      ],
+      "title": "SoilProfile",
+      "type": "object"
+    },
+    "SoilSet": {
+      "additionalProperties": false,
+      "properties": {
+        "profiles": {
+          "items": {
+            "$ref": "#/$defs/SoilProfile"
+          },
+          "minItems": 1,
+          "title": "Profiles",
+          "type": "array"
+        },
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        }
+      },
+      "required": [
+        "provenance",
+        "profiles"
+      ],
+      "title": "SoilSet",
+      "type": "object"
+    }
+  },
+  "title": "CORVO contracts"
+}

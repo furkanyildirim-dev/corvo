@@ -1,0 +1,9 @@
+{
+  "forecast": "FORECAST",
+  "game_assumption": "GAME ASSUMPTION",
+  "mock": "MOCK",
+  "model_estimate": "ESTIMATED",
+  "observed": "OBSERVED",
+  "reanalysis": "REANALYSIS (model-derived)",
+  "simulated": "SIMULATED"
+}

@@ -1,0 +1,206 @@
+[
+  {
+    "name": "observed with dataset",
+    "provenance": {
+      "dataset_id": "HLSS30",
+      "derived_from": [],
+      "generator": null,
+      "kind": "observed",
+      "license": null,
+      "notes": null,
+      "resolution_m": null,
+      "retrieved_at": "2026-10-28T00:00:00+00:00",
+      "source": "Some source",
+      "temporal_resolution": null,
+      "version": null
+    },
+    "valid": true
+  },
+  {
+    "name": "observed without dataset",
+    "provenance": {
+      "dataset_id": null,
+      "derived_from": [],
+      "generator": null,
+      "kind": "observed",
+      "license": null,
+      "notes": null,
+      "resolution_m": null,
+      "retrieved_at": null,
+      "source": "Some source",
+      "temporal_resolution": null,
+      "version": null
+    },
+    "valid": false
+  },
+  {
+    "name": "reanalysis without retrieval time",
+    "provenance": {
+      "dataset_id": "POWER",
+      "derived_from": [],
+      "generator": null,
+      "kind": "reanalysis",
+      "license": null,
+      "notes": null,
+      "resolution_m": null,
+      "retrieved_at": null,
+      "source": "Some source",
+      "temporal_resolution": null,
+      "version": null
+    },
+    "valid": false
+  },
+  {
+    "name": "forecast with generator",
+    "provenance": {
+      "dataset_id": "X",
+      "derived_from": [],
+      "generator": "g",
+      "kind": "forecast",
+      "license": null,
+      "notes": null,
+      "resolution_m": null,
+      "retrieved_at": "2026-10-28T00:00:00+00:00",
+      "source": "Some source",
+      "temporal_resolution": null,
+      "version": null
+    },
+    "valid": false
+  },
+  {
+    "name": "mock proper",
+    "provenance": {
+      "dataset_id": null,
+      "derived_from": [],
+      "generator": "tests",
+      "kind": "mock",
+      "license": null,
+      "notes": null,
+      "resolution_m": null,
+      "retrieved_at": null,
+      "source": "Some source",
+      "temporal_resolution": null,
+      "version": null
+    },
+    "valid": true
+  },
+  {
+    "name": "mock without generator",
+    "provenance": {
+      "dataset_id": null,
+      "derived_from": [],
+      "generator": null,
+      "kind": "mock",
+      "license": null,
+      "notes": null,
+      "resolution_m": null,
+      "retrieved_at": null,
+      "source": "Some source",
+      "temporal_resolution": null,
+      "version": null
+    },
+    "valid": false
+  },
+  {
+    "name": "mock posing as dataset",
+    "provenance": {
+      "dataset_id": "POWER_DAILY",
+      "derived_from": [],
+      "generator": "g",
+      "kind": "mock",
+      "license": null,
+      "notes": null,
+      "resolution_m": null,
+      "retrieved_at": null,
+      "source": "Some source",
+      "temporal_resolution": null,
+      "version": null
+    },
+    "valid": false
+  },
+  {
+    "name": "mock with retrieval time",
+    "provenance": {
+      "dataset_id": null,
+      "derived_from": [],
+      "generator": "g",
+      "kind": "mock",
+      "license": null,
+      "notes": null,
+      "resolution_m": null,
+      "retrieved_at": "2026-10-28T00:00:00+00:00",
+      "source": "Some source",
+      "temporal_resolution": null,
+      "version": null
+    },
+    "valid": false
+  },
+  {
+    "name": "simulated without generator",
+    "provenance": {
+      "dataset_id": null,
+      "derived_from": [],
+      "generator": null,
+      "kind": "simulated",
+      "license": null,
+      "notes": null,
+      "resolution_m": null,
+      "retrieved_at": null,
+      "source": "Some source",
+      "temporal_resolution": null,
+      "version": null
+    },
+    "valid": false
+  },
+  {
+    "name": "simulated proper",
+    "provenance": {
+      "dataset_id": null,
+      "derived_from": [],
+      "generator": "aquacrop",
+      "kind": "simulated",
+      "license": null,
+      "notes": null,
+      "resolution_m": null,
+      "retrieved_at": null,
+      "source": "Some source",
+      "temporal_resolution": null,
+      "version": null
+    },
+    "valid": true
+  },
+  {
+    "name": "game assumption proper",
+    "provenance": {
+      "dataset_id": null,
+      "derived_from": [],
+      "generator": "corvo-team",
+      "kind": "game_assumption",
+      "license": null,
+      "notes": null,
+      "resolution_m": null,
+      "retrieved_at": null,
+      "source": "Some source",
+      "temporal_resolution": null,
+      "version": null
+    },
+    "valid": true
+  },
+  {
+    "name": "model estimate proper",
+    "provenance": {
+      "dataset_id": "SoilGrids",
+      "derived_from": [],
+      "generator": null,
+      "kind": "model_estimate",
+      "license": null,
+      "notes": null,
+      "resolution_m": null,
+      "retrieved_at": "2026-10-28T00:00:00+00:00",
+      "source": "Some source",
+      "temporal_resolution": null,
+      "version": null
+    },
+    "valid": true
+  }
+]

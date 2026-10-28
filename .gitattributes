@@ -1,0 +1,4 @@
+# Keep LF everywhere so generated files compare equal on Windows (gen:check) and diffs stay clean.
+* text=auto eol=lf
+*.png binary
+*.jpg binary

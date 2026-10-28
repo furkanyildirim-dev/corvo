@@ -1,0 +1,21 @@
+{
+  "name": "corvo",
+  "private": true,
+  "version": "0.1.0",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "workspaces": ["apps/*", "packages/*"],
+  "scripts": {
+    "gen": "node tools/py.mjs tools/export_contracts.py",
+    "gen:check": "node tools/py.mjs tools/export_contracts.py --check",
+    "dev:api": "node tools/py.mjs -m uvicorn corvo_api.main:app --reload --port 8000 --app-dir services/api",
+    "dev:web": "npm run dev -w @corvo/web",
+    "test:api": "node tools/py.mjs -m pytest -q services/api",
+    "test:contracts": "npm test -w @corvo/contracts",
+    "test:web": "npm test -w @corvo/web",
+    "test": "npm run test:api && npm run test:contracts && npm run test:web",
+    "typecheck": "npm run typecheck -w @corvo/contracts && npm run typecheck -w @corvo/web",
+    "build": "npm run build -w @corvo/web"
+  }
+}

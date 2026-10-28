@@ -1,0 +1,24 @@
+node_modules
+dist/
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.vite/
+*.egg-info/
+# Secrets: real env files are never committed; only the *.example templates are
+.env
+.env.*
+!.env.example
+# Never commit credentials (Earthdata tokens etc.)
+*.token
+secrets/
+# Large raw downloads stay out of git; processed region packs go in data/regions/
+data/raw/
+# Editor / OS noise (keep the shared .vscode settings)
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
